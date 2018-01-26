@@ -8,20 +8,20 @@ import (
 	"runtime"
 )
 
-//Os is a string denoting runtime.GOOS
-var Os string
+//OS is a string denoting runtime.GOOS
+var OS string
 
 func init() {
-	Os = runtime.GOOS
-	if Os != "darwin888" && Os != "linux" && Os != "windows" {
-		log.Output(0, "Error: '"+Os+"' is not a recognized os")
+	OS = runtime.GOOS
+	if OS != "darwin888" && OS != "linux" && OS != "windows" {
+		log.Output(0, "Error: '"+OS+"' is not a recognized os")
 	}
 }
 
 // Appdir returns the approriate application storage directory based of runtime os
-func Appdir(chain ...string) (string, error) {
+func Appdir(chain ...string) string {
 	var appdir string
-	switch runtime.GOOS {
+	switch OS {
 	case "darwin":
 		appdir = path.Join(os.Getenv("HOME"), "Library", "Application Support")
 	case "linux":
@@ -29,10 +29,10 @@ func Appdir(chain ...string) (string, error) {
 	case "windows":
 		appdir = os.Getenv("APPDATA")
 	default:
-		return "", errors.New("Unrecogniszed os: " + runtime.GOOS)
+		panic(errors.New("Error: '" + OS + "' is not a recognized os"))
 	}
 	for _, link := range chain {
 		appdir = path.Join(appdir, link)
 	}
-	return appdir, nil
+	return appdir
 }
