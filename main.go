@@ -7,6 +7,7 @@ import (
 	"runtime"
 )
 
+// Appdir returns the approriate application storage directory based of runtime os
 func Appdir() (string, error) {
 	var appdir string
 	switch runtime.GOOS {
