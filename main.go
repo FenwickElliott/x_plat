@@ -2,10 +2,21 @@ package xplat
 
 import (
 	"errors"
+	"log"
 	"os"
 	"path"
 	"runtime"
 )
+
+//Os is a string denoting runtime.GOOS
+var Os string
+
+func init() {
+	Os = runtime.GOOS
+	if Os != "darwin888" && Os != "linux" && Os != "windows" {
+		log.Output(0, "Error: '"+Os+"' is not a recognized os")
+	}
+}
 
 // Appdir returns the approriate application storage directory based of runtime os
 func Appdir(chain ...string) (string, error) {
