@@ -13,7 +13,7 @@ var OS string
 
 func init() {
 	OS = runtime.GOOS
-	if OS != "darwin888" && OS != "linux" && OS != "windows" {
+	if OS != "darwin" && OS != "linux" && OS != "windows" {
 		log.Output(0, "Error: '"+OS+"' is not a recognized os")
 	}
 }
