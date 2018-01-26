@@ -8,7 +8,7 @@ import (
 )
 
 // Appdir returns the approriate application storage directory based of runtime os
-func Appdir() (string, error) {
+func Appdir(chain ...string) (string, error) {
 	var appdir string
 	switch runtime.GOOS {
 	case "darwin":
@@ -19,6 +19,9 @@ func Appdir() (string, error) {
 		appdir = os.Getenv("APPDATA")
 	default:
 		return "", errors.New("Unrecogniszed os: " + runtime.GOOS)
+	}
+	for _, link := range chain {
+		appdir = path.Join(appdir, link)
 	}
 	return appdir, nil
 }
