@@ -2,7 +2,6 @@ package xplat
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -21,7 +20,7 @@ func init() {
 }
 
 // Appdir returns the approriate application storage directory based of runtime os
-func Appdir(chain ...string) string {
+func Appdir(chain ...string) (string, error) {
 	var appdir string
 	switch OS {
 	case "darwin":
@@ -31,25 +30,26 @@ func Appdir(chain ...string) string {
 	case "windows":
 		appdir = os.Getenv("APPDATA")
 	default:
-		panic(errors.New("Error: '" + OS + "' is not a recognized os"))
+		return "", errors.New("Error: '" + OS + "' is not a recognized os")
 	}
 	for _, link := range chain {
 		appdir = path.Join(appdir, link)
 	}
-	return appdir
+	return appdir, nil
 }
 
 // Openbrowser opens the default broswer of the host system to given url
-func Openbrowser(url string) {
+func Openbrowser(url string) error {
+	var err error
 	switch OS {
 	case "darwin":
-		fmt.Println("here")
-		exec.Command("open", url).Start()
+		err = exec.Command("open", url).Start()
 	case "linux":
-		exec.Command("xdg-open", url).Start()
+		err = exec.Command("xdg-open", url).Start()
 	case "windows":
-		exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+		err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
 	default:
-		panic(fmt.Errorf("Error: '" + OS + "' is not a recognized os"))
+		err = errors.New("Error: '" + OS + "' is not a recognized os")
 	}
+	return err
 }
