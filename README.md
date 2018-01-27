@@ -4,6 +4,8 @@ Utility package contaning enviroment specific methods and variables
 ### Instalation
 `go get github.com/fenwickelliott/xplat`
 
+### Usage
+`import "github.com/fenwickelliott/xplat`
 
 ### Methods
 * `xplat.Appdir()`
