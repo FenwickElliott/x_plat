@@ -2,8 +2,10 @@ package xplat
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"path"
 	"runtime"
 )
@@ -35,4 +37,19 @@ func Appdir(chain ...string) string {
 		appdir = path.Join(appdir, link)
 	}
 	return appdir
+}
+
+// Openbrowser opens the default broswer of the host system to given url
+func Openbrowser(url string) {
+	switch OS {
+	case "darwin":
+		fmt.Println("here")
+		exec.Command("open", url).Start()
+	case "linux":
+		exec.Command("xdg-open", url).Start()
+	case "windows":
+		exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+	default:
+		panic(fmt.Errorf("Error: '" + OS + "' is not a recognized os"))
+	}
 }
